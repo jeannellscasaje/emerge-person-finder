@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("api/v1/persons")
@@ -24,7 +25,7 @@ class PersonController (private val personsService: PersonsService,
 
 
     @PostMapping("")
-    fun createPerson(@RequestBody request: CreatePersonRequest): ResponseEntity<CreatePersonResponse> {
+    fun createPerson(@Valid @RequestBody request: CreatePersonRequest): ResponseEntity<CreatePersonResponse> {
         val newPerson = Person(name = request.name)
         personsService.save(newPerson)
         return ResponseEntity.status(HttpStatus.CREATED).body(CreatePersonResponse(newPerson.name))

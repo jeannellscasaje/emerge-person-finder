@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("api/v1")
@@ -22,7 +23,7 @@ class LocationController (private val  personsService : PersonsService,
 
          @PutMapping("/persons/{id}/location")
          fun updateLocation( @PathVariable id: Long,
-                             @RequestBody request: LocationUpdateRequest): ResponseEntity<PersonDto> {
+                             @Valid @RequestBody request: LocationUpdateRequest): ResponseEntity<PersonDto> {
              val person = personsService.getById(id)
              val location = person.location ?: Location(latitude = request.latitude, longitude = request.longitude)
              location.latitude = request.latitude
