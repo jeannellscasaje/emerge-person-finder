@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotNull
 
 @RestController
 @RequestMapping("api/v1/persons")
@@ -34,9 +36,9 @@ class PersonController (private val personsService: PersonsService,
 
         @GetMapping("/locations/nearby")
         fun getNearby(
-        @RequestParam lat: Double,
-        @RequestParam lon: Double,
-        @RequestParam radiusKm: Double): ResponseEntity<List<PersonsNearbyResponse>?> {
+            @RequestParam @NotNull lat: Double,
+            @RequestParam @NotNull lon: Double,
+            @RequestParam @NotNull @Min(0) radiusKm: Double): ResponseEntity<List<PersonsNearbyResponse>?> {
             val nearbyNames = locationService.findNearbyPersons(lat, lon, radiusKm)
             return ResponseEntity.ok(nearbyNames)
         }
