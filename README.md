@@ -1,108 +1,36 @@
-# 👥 Persons Finder – Backend Challenge
+Submitted by: Jeannell S. Casaje
 
-Welcome to the **Persons Finder** backend challenge! This project simulates the backend for a mobile app that helps users find people around them.
-
-Your task is to implement a REST API that allows clients to create, update, and search for people based on location and other criteria.
-
----
-
-## 📌 Requirements
-
-Implement the following endpoints:
-
+## 📌 ENDPOINTS IMPLEMENTED
 ### ➕ `POST /persons`
-
-Create a new person.
-
----
 
 ### ✏️ `PUT /persons/{id}/location`
 
-Update (or create if not exists) a person's current **latitude** and **longitude**.
-
----
-
 ### 🔍 `GET /persons/nearby`
-
-Find people around a **query location**, specified using the following query parameters:
-
-* `lat`: latitude
-* `lon`: longitude
-* `radiusKm`: radius in kilometres
-
-> 🧠 **Extra challenge**: Return the list **sorted by distance** to the query point.
-
----
 
 ### 👤 `GET /persons`
 
-Retrieve one or more persons by their IDs. Accepts:
+### Swagger Implemented
 
-* `id`: one or more person IDs (e.g., `?id=1&id=2`)
+![Swagger](https://github.com/user-attachments/assets/f315ad20-e211-4283-a2f8-75516f0f5ba2)
 
----
+### Postman Collection
+[Person-Finder.postman_collection.json](https://github.com/user-attachments/files/20533535/Person-Finder.postman_collection.json)
 
-## 📦 Expected Output
+### Testing Artifacts
 
-All responses must be in **valid JSON format**, following clean and consistent REST API design principles.
+### Create Person
 
----
+![Create Person](https://github.com/user-attachments/assets/07fed7bb-8841-4ba0-ae80-b48be2d98f72)
 
-## 🧱 What You Need to Build
+### Get Person
+![Get Person](https://github.com/user-attachments/assets/8ad01fe6-7274-4d73-be62-67b845800c8f)
 
-* Domain models: `Person`, `Location`, etc.
-* Services for saving, updating, and querying data
-* In-memory storage or a basic persistent layer
-* Proper project structure (e.g. controller / service / repository)
-* Extra bonus if you use UseCase pattern (Controller -> Use Case (business logic) -> Service -> Repository)
+### Add or Update Person
+![Add and or  Update Location](https://github.com/user-attachments/assets/5b643e32-b1d1-4972-9f57-a5aa280e1937)
 
----
+### Delete Location
+![Delete Location](https://github.com/user-attachments/assets/3572dc25-fd60-4a41-a575-2b8c7ef6f1f3)
 
-## 🧪 Bonus Points
+### Find Nearby Persons
+![Find Nearby Persons](https://github.com/user-attachments/assets/ea15a615-7039-415e-a4bd-b400efcf85db)
 
-### ✅ Testing
-
-* Include **unit tests** for service logic
-* Include **integration tests** for API endpoints
-* Use a test framework like **JUnit**, **MockK**, or **Mockito**
-
----
-
-### 🧠 Scalability Challenge
-
-* Seed the system with **1 million**, **10 million**, and **100 million** records
-* Benchmark and **optimise** the `GET /persons/nearby` endpoint
-* Explain any indexing or query optimisation strategies used
-
----
-
-### 📚 Clean Code
-
-* Use **DTOs** for API request and response bodies
-* Apply proper **validation**, **error handling**, and maintain clean separation of concerns
-
----
-
-## ✅ Getting Started
-
-```bash
-git clone https://github.com/leonardoduartelana/persons-finder.git
-cd persons-finder
-```
-
-Implement your solution and push it to your **own GitHub repository**.
-
----
-
-## 📬 Submission & Questions
-
-* Submit the link to your GitHub repository
-* For any questions, email: [leo@emerge.nz](mailto:leo@emerge.nz)
-
----
-
-## 💡 Tips
-
-* Use **OpenAPI/Swagger** to document your APIs (optional, but encouraged)
-* Handle edge cases like missing locations or malformed input
-* Design the system **as if it were going into production**
