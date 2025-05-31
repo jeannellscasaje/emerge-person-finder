@@ -24,14 +24,15 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.h2database:h2:2.1.212")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
 	compileOnly("org.projectlombok:lombok:1.18.28")
 	annotationProcessor("org.projectlombok:lombok:1.18.28")
-	testCompileOnly ("org.projectlombok:lombok:1.18.28")
-	testAnnotationProcessor ("org.projectlombok:lombok:1.18.28")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testAnnotationProcessor ("org.projectlombok:lombok:1.18.28")
+	testCompileOnly ("org.projectlombok:lombok:1.18.28")
+	testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 	testImplementation("org.mockito:mockito-core:5.12.0")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
 	testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.22")
@@ -40,6 +41,8 @@ dependencies {
 	}
 	testImplementation("org.mockito:mockito-core:5.11.0")
 	testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
+
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
 
 }
 
