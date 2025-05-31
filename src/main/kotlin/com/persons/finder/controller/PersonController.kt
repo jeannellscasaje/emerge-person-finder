@@ -1,7 +1,10 @@
 package com.persons.finder.controller
 
 import com.persons.finder.domain.Person
+import com.persons.finder.dto.LocationDto
+import com.persons.finder.dto.PersonDto
 import com.persons.finder.dto.request.CreatePersonRequest
+import com.persons.finder.dto.response.CreatePersonResponse
 import com.persons.finder.dto.response.PersonsNearbyResponse
 import com.persons.finder.services.LocationsService
 import com.persons.finder.services.PersonsService
@@ -21,10 +24,10 @@ class PersonController (private val personsService: PersonsService,
 
 
     @PostMapping("")
-    fun createPerson(@RequestBody request: CreatePersonRequest): ResponseEntity<String> {
+    fun createPerson(@RequestBody request: CreatePersonRequest): ResponseEntity<CreatePersonResponse> {
         val newPerson = Person(name = request.name)
         personsService.save(newPerson)
-        return ResponseEntity.status(HttpStatus.CREATED).body(newPerson.name)
+        return ResponseEntity.status(HttpStatus.CREATED).body(CreatePersonResponse(newPerson.name))
     }
 
 
@@ -38,9 +41,21 @@ class PersonController (private val personsService: PersonsService,
         }
 
         @GetMapping
-        fun getPersonsByIds(@RequestParam ids: List<Long>): ResponseEntity<List<Person>> {
+        fun getPersonsByIds(@RequestParam ids: List<Long>): ResponseEntity<List<PersonDto>> {
             val persons = personsService.getByIds(ids)
-            return ResponseEntity.ok(persons)
+            val response = persons.map { person ->
+                PersonDto(
+                    name = person.name,
+                    location = person.location?.let {
+                        LocationDto(
+                            latitude = it.latitude,
+                            longitude = it.longitude
+                        )
+                    }
+                )
+            }
+
+            return ResponseEntity.ok(response)
         }
 
 

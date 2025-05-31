@@ -1,9 +1,12 @@
 package com.persons.finder.controller
 
 import com.persons.finder.domain.Location
+import com.persons.finder.dto.LocationDto
+import com.persons.finder.dto.PersonDto
 import com.persons.finder.dto.request.LocationUpdateRequest
 import com.persons.finder.services.LocationsService
 import com.persons.finder.services.PersonsService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,7 +22,7 @@ class LocationController (private val  personsService : PersonsService,
 
          @PutMapping("/persons/{id}/location")
          fun updateLocation( @PathVariable id: Long,
-                             @RequestBody request: LocationUpdateRequest): ResponseEntity<Void> {
+                             @RequestBody request: LocationUpdateRequest): ResponseEntity<PersonDto> {
              val person = personsService.getById(id)
              val location = person.location ?: Location(latitude = request.latitude, longitude = request.longitude)
              location.latitude = request.latitude
@@ -27,12 +30,22 @@ class LocationController (private val  personsService : PersonsService,
              person.location = location
 
              locationsService.addLocation(person)
-             return ResponseEntity.noContent().build()
+             val response = PersonDto(
+                 name = person.name,
+                 location = person.location?.let {
+                     LocationDto(
+                         latitude = it.latitude,
+                         longitude = it.longitude
+                     )
+                 }
+             )
+
+             return ResponseEntity.status(HttpStatus.ACCEPTED).body(response)
          }
 
          @DeleteMapping("/remove/{id}/location")
-         fun deleteLocation(@PathVariable id: Long): ResponseEntity<Void> {
+         fun deleteLocation(@PathVariable id: Long): ResponseEntity<Long> {
              locationsService.removeLocation(id)
-             return ResponseEntity.noContent().build()
+             return ResponseEntity.status(HttpStatus.OK).body(id)
     }
 }
