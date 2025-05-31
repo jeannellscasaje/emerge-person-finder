@@ -16,16 +16,27 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import javax.validation.Valid
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 
 @RestController
 @RequestMapping("api/v1/persons")
-class PersonController (private val personsService: PersonsService,
-                             private val locationService: LocationsService) {
+class PersonController(
+    private val personsService: PersonsService,
+    private val locationService: LocationsService
+) {
 
-
+    @Operation(summary = "Create a new person")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Person created successfully"),
+            ApiResponse(responseCode = "400", description = "Invalid input")
+        ]
+    )
     @PostMapping("")
     fun createPerson(@Valid @RequestBody request: CreatePersonRequest): ResponseEntity<CreatePersonResponse> {
         val newPerson = Person(name = request.name)
@@ -33,33 +44,44 @@ class PersonController (private val personsService: PersonsService,
         return ResponseEntity.status(HttpStatus.CREATED).body(CreatePersonResponse(newPerson.name))
     }
 
+    @Operation(summary = "Get nearby persons within radius")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved nearby persons"),
+            ApiResponse(responseCode = "400", description = "Invalid query parameters")
+        ]
+    )
+    @GetMapping("/locations/nearby")
+    fun getNearby(
+        @RequestParam @NotNull lat: Double,
+        @RequestParam @NotNull lon: Double,
+        @RequestParam @NotNull @Min(0) radiusKm: Double
+    ): ResponseEntity<List<PersonsNearbyResponse>?> {
+        val nearbyNames = locationService.findNearbyPersons(lat, lon, radiusKm)
+        return ResponseEntity.ok(nearbyNames)
+    }
 
-        @GetMapping("/locations/nearby")
-        fun getNearby(
-            @RequestParam @NotNull lat: Double,
-            @RequestParam @NotNull lon: Double,
-            @RequestParam @NotNull @Min(0) radiusKm: Double): ResponseEntity<List<PersonsNearbyResponse>?> {
-            val nearbyNames = locationService.findNearbyPersons(lat, lon, radiusKm)
-            return ResponseEntity.ok(nearbyNames)
+    @Operation(summary = "Get persons by list of IDs")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved persons"),
+            ApiResponse(responseCode = "400", description = "Invalid person IDs")
+        ]
+    )
+    @GetMapping
+    fun getPersonsByIds(@RequestParam ids: List<Long>): ResponseEntity<List<PersonDto>> {
+        val persons = personsService.getByIds(ids)
+        val response = persons.map { person ->
+            PersonDto(
+                name = person.name,
+                location = person.location?.let {
+                    LocationDto(
+                        latitude = it.latitude,
+                        longitude = it.longitude
+                    )
+                }
+            )
         }
-
-        @GetMapping
-        fun getPersonsByIds(@RequestParam ids: List<Long>): ResponseEntity<List<PersonDto>> {
-            val persons = personsService.getByIds(ids)
-            val response = persons.map { person ->
-                PersonDto(
-                    name = person.name,
-                    location = person.location?.let {
-                        LocationDto(
-                            latitude = it.latitude,
-                            longitude = it.longitude
-                        )
-                    }
-                )
-            }
-
-            return ResponseEntity.ok(response)
-        }
-
-
+        return ResponseEntity.ok(response)
+    }
 }
