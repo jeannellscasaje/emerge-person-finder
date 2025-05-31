@@ -1,0 +1,7 @@
+--INSERT INTO person (id, name) VALUES
+--(1, 'Alice'),
+--(2, 'Bob');
+--
+--INSERT INTO location (latitude, longitude, person_id) VALUES
+--(12.345, 67.890, 1),
+--(23.456, 78.901, 2);

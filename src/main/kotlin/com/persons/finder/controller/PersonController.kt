@@ -1,42 +1,47 @@
 package com.persons.finder.controller
 
-import org.springframework.beans.factory.annotation.Autowired
+import com.persons.finder.domain.Person
+import com.persons.finder.dto.request.CreatePersonRequest
+import com.persons.finder.dto.response.PersonsNearbyResponse
+import com.persons.finder.services.LocationsService
+import com.persons.finder.services.PersonsService
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("api/v1/persons")
-class PersonController @Autowired constructor() {
+class PersonController (private val personsService: PersonsService,
+                             private val locationService: LocationsService) {
 
-    /*
-        TODO PUT API to update/create someone's location using latitude and longitude
-        (JSON) Body
-     */
 
-    /*
-        TODO POST API to create a 'person'
-        (JSON) Body and return the id of the created entity
-    */
-
-    /*
-        TODO GET API to retrieve people around query location with a radius in KM, Use query param for radius.
-        TODO API just return a list of persons ids (JSON)
-        // Example
-        // John wants to know who is around his location within a radius of 10km
-        // API would be called using John's id and a radius 10km
-     */
-
-    /*
-        TODO GET API to retrieve a person or persons name using their ids
-        // Example
-        // John has the list of people around them, now they need to retrieve everybody's names to display in the app
-        // API would be called using person or persons ids
-     */
-
-    @GetMapping("")
-    fun getExample(): String {
-        return "Hello Example"
+    @PostMapping("")
+    fun createPerson(@RequestBody request: CreatePersonRequest): ResponseEntity<String> {
+        val newPerson = Person(name = request.name)
+        personsService.save(newPerson)
+        return ResponseEntity.status(HttpStatus.CREATED).body(newPerson.name)
     }
+
+
+        @GetMapping("/locations/nearby")
+        fun getNearby(
+        @RequestParam lat: Double,
+        @RequestParam lon: Double,
+        @RequestParam radiusKm: Double): ResponseEntity<List<PersonsNearbyResponse>?> {
+            val nearbyNames = locationService.findNearbyPersons(lat, lon, radiusKm)
+            return ResponseEntity.ok(nearbyNames)
+        }
+
+        @GetMapping
+        fun getPersonsByIds(@RequestParam ids: List<Long>): ResponseEntity<List<Person>> {
+            val persons = personsService.getByIds(ids)
+            return ResponseEntity.ok(persons)
+        }
+
 
 }
