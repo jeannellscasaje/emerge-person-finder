@@ -30,14 +30,13 @@ class LocationControllerIntegrationTest {
 
     @Test
     fun `PUT - update location of a person`() {
-        // Arrange
+
         val person = Person(name = "Sam")
         val savedPerson = personRepository.save(person)
 
         val locationRequest = LocationUpdateRequest(latitude = 40.3456, longitude = 56.9012)
         val jsonRequest = objectMapper.writeValueAsString(locationRequest)
 
-        // Act & Assert
         mockMvc.perform(
             put("/api/v1/persons/${savedPerson.id}/location")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -51,11 +50,10 @@ class LocationControllerIntegrationTest {
 
     @Test
     fun `DELETE - remove location of a person`() {
-        // Arrange
+
         val person = Person(name = "Sam", location = Location(latitude = 10.0, longitude = 20.0))
         val savedPerson = personRepository.save(person)
 
-        // Act & Assert
         mockMvc.perform(delete("/api/v1/remove/${savedPerson.id}/location"))
             .andExpect(status().isOk)
             .andExpect(content().string(savedPerson.id.toString()))

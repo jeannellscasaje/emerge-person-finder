@@ -21,7 +21,7 @@ class LocationControllerTest {
 
     @Test
     fun `updateLocation should update person's location and return accepted`() {
-        // Arrange
+
         val personId = 1L
         val request = LocationUpdateRequest(latitude = 10.0, longitude = 20.0)
         val person = Person(id = personId, name = "John Doe", location = null)

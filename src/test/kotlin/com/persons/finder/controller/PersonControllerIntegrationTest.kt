@@ -1,7 +1,6 @@
 package com.persons.finder.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.persons.finder.domain.Person
 import com.persons.finder.dto.request.CreatePersonRequest
 import com.persons.finder.services.LocationsService
 import com.persons.finder.services.PersonsService

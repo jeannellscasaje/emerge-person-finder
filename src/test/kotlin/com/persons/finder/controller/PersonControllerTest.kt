@@ -1,19 +1,12 @@
 package com.persons.finder.controller
 
 import com.persons.finder.domain.Person
-import com.persons.finder.dto.request.CreatePersonRequest
 import com.persons.finder.dto.response.PersonsNearbyResponse
 import com.persons.finder.services.LocationsService
 import com.persons.finder.services.PersonsService
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import kotlin.test.assertEquals
