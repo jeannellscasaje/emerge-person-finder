@@ -34,6 +34,9 @@ Submitted by: Jeannell S. Casaje
 ### Find Nearby Persons
 ![Find Nearby Persons](https://github.com/user-attachments/assets/ea15a615-7039-415e-a4bd-b400efcf85db)
 
+### Find Nearby Persons with Pagination added
+![With pagination](https://github.com/user-attachments/assets/3b224f7a-d8c3-4f60-800e-2a46cf9f3fba)
+
 ### Seeding
 ![Seed](https://github.com/user-attachments/assets/ceef0a7f-7846-4b84-87bb-f7f90cbb5af0)
 
