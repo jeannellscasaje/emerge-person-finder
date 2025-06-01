@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.springframework.data.domain.PageRequest
 import javax.validation.Valid
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
@@ -55,11 +56,15 @@ class PersonController(
     fun getNearby(
         @RequestParam @NotNull lat: Double,
         @RequestParam @NotNull lon: Double,
-        @RequestParam @NotNull @Min(0) radiusKm: Double
-    ): ResponseEntity<List<PersonsNearbyResponse>?> {
-        val nearbyNames = locationService.findNearbyPersons(lat, lon, radiusKm)
-        return ResponseEntity.ok(nearbyNames)
+        @RequestParam @NotNull @Min(0) radiusKm: Double,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int
+    ): ResponseEntity<List<PersonsNearbyResponse>> {
+        val pageable = PageRequest.of(page, size)
+        val nearbyPage = locationService.findNearbyPersons(lat, lon, radiusKm, pageable)
+        return ResponseEntity.ok(nearbyPage.content)
     }
+
 
     @Operation(summary = "Get persons by list of IDs")
     @ApiResponses(

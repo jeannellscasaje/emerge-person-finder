@@ -4,6 +4,8 @@ import com.persons.finder.domain.Person
 import com.persons.finder.dto.response.PersonsNearbyResponse
 import com.persons.finder.repository.LocationRepository
 import com.persons.finder.repository.PersonRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -26,9 +28,15 @@ class LocationsServiceImpl(private val locationRepository: LocationRepository,
         locationRepository.deleteById(locationReferenceId)
     }
 
-    override fun findNearbyPersons(latitude: Double, longitude: Double, radiusInKm: Double): List<PersonsNearbyResponse> {
-        return locationRepository.findPersonNamesWithinRadiusSorted(latitude, longitude, radiusInKm)
+    override fun findNearbyPersons(
+        latitude: Double,
+        longitude: Double,
+        radiusInKm: Double,
+        pageable: Pageable
+    ): Page<PersonsNearbyResponse> {
+        return locationRepository.findPersonNamesWithinRadiusSorted(latitude, longitude, radiusInKm, pageable)
             .map { name -> PersonsNearbyResponse(name) }
     }
+
 
 }
