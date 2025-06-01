@@ -5,7 +5,9 @@ Submitted by: Jeannell S. Casaje
 
 ### ✏️ `PUT /persons/{id}/location`
 
-### 🔍 `GET /persons/nearby`
+### 🔍 `GET /persons/locations/nearby`
+
+### 🔍 `DELETE /remove/{id}/location`
 
 ### 👤 `GET /persons`
 
